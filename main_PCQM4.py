@@ -12,6 +12,9 @@ import argparse
 import numpy as np
 import random
 from datetime import datetime
+
+#os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
+
 now = datetime.now()
 timestamp = str(now.year)[-2:] + "_" + str(now.month).zfill(2) + "_" + str(now.day).zfill(2) + "_" + \
             str(now.hour).zfill(2) + str(now.minute).zfill(2) + str(now.second).zfill(2)
@@ -72,7 +75,7 @@ def test(model, device, loader):
 def main():
     # Training settings
     parser = argparse.ArgumentParser(description='GNN baselines on pcqm4m with Pytorch Geometrics')
-    parser.add_argument('--device', type=int, default=5,
+    parser.add_argument('--device', type=int, default=0,
                         help='which gpu to use if any (default: 0)')
     parser.add_argument('--gnn', type=str, default='gin-virtual',
                         help='GNN gin, gin-virtual, or gcn, or gcn-virtual (default: gin-virtual)')

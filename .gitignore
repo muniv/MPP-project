@@ -1,5 +1,7 @@
 __pycache__/
 cache/
 ckpt/
+finetune_ckpt/
 myenv/
 utils/__pycache__/
+dataset/

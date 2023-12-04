@@ -192,7 +192,7 @@ def main():
                         help='dropout ratio (default: 0)')
     parser.add_argument('--num_layers', type=int, default=2,
                         help='number of GNN message passing layers (default: 5)')
-    parser.add_argument('--emb_dim', type=int, default=150,
+    parser.add_argument('--emb_dim', type=int, default=600,
                         help='dimensionality of hidden units in GNNs (default: 600)')
     parser.add_argument('--gru_emb', type=int, default=32,
                         help='GRU token embed size (default: 32)')
@@ -212,7 +212,7 @@ def main():
     parser.add_argument('--log_dir', type=str, default="",
                         help='tensorboard log directory')
     #parser.add_argument('--checkpoint_dir', type=str, default=f'ckpt/{timestamp}', help='directory to save checkpoint')
-    parser.add_argument('--checkpoint_dir', type=str, default='ckpt/{}'.format(timestamp), help='directory to save checkpoint')
+    parser.add_argument('--checkpoint_dir', type=str, default='ckpt/finetune_{}'.format(timestamp), help='directory to save checkpoint')
 
     args = parser.parse_args()
 
@@ -262,6 +262,16 @@ def main():
         model = SeqModel(args).to(device)
     else:
         raise ValueError('Invalid GNN type')
+
+    # 프리트레인된 모델의 상태 사전 로드
+    pretrained_model_path = './ckpt/23_12_04_120829/checkpoint.pt'  # 실제 파일 경로로 수정
+    checkpoint = torch.load(pretrained_model_path, map_location=device)
+
+    # 모델의 가중치만 포함하는 상태 사전을 추출
+    pretrained_state_dict = checkpoint['model_state_dict']
+
+    # 상태 사전을 현재 모델에 적용
+    model.load_state_dict(pretrained_state_dict)
 
     num_params = sum(p.numel() for p in model.parameters())
     #print(f'#Params: {num_params}')
