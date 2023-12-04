@@ -24,6 +24,9 @@ class GINConv(MessagePassing):
         self.bond_encoder = BondEncoder(emb_dim=emb_dim)
 
     def forward(self, x, edge_index, edge_attr):
+        # edge_attr 크기 로깅
+        #print("edge_attr size:", edge_attr.size())
+
         edge_embedding = self.bond_encoder(edge_attr)
         out = self.mlp((1 + self.eps) * x + self.propagate(edge_index, x=x, edge_attr=edge_embedding))
 

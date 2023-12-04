@@ -2,7 +2,7 @@ import os
 import os.path as osp
 import shutil
 from torch_geometric.data import DataLoader
-from ogb.utils import smiles2graph
+from ogb.utils.mol import smiles2graph
 from ogb.utils.torch_util import replace_numpy_with_torchtensor
 from ogb.utils.url import decide_download, download_url, extract_zip
 import pandas as pd

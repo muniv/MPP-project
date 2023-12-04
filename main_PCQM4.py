@@ -102,7 +102,9 @@ def main():
                         help='number of workers (default: 0)')
     parser.add_argument('--log_dir', type=str, default="",
                         help='tensorboard log directory')
-    parser.add_argument('--checkpoint_dir', type=str, default=f'ckpt/{timestamp}', help='directory to save checkpoint')
+    #parser.add_argument('--checkpoint_dir', type=str, default=f'ckpt/{timestamp}', help='directory to save checkpoint')
+    parser.add_argument('--checkpoint_dir', type=str, default='ckpt/{}'.format(timestamp), help='directory to save checkpoint')
+
     parser.add_argument('--save_test_dir', type=str, default=f'test_result/{timestamp}', help='directory to save test submission file')
     args = parser.parse_args()
 

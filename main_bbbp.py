@@ -123,7 +123,9 @@ def main():
                         help='number of workers (default: 0)')
     parser.add_argument('--log_dir', type=str, default="",
                         help='tensorboard log directory')
-    parser.add_argument('--checkpoint_dir', type=str, default=f'ckpt/{timestamp}', help='directory to save checkpoint')
+    #parser.add_argument('--checkpoint_dir', type=str, default=f'ckpt/{timestamp}', help='directory to save checkpoint')
+    parser.add_argument('--checkpoint_dir', type=str, default='ckpt/{}'.format(timestamp), help='directory to save checkpoint')
+
     args = parser.parse_args()
 
     print(args)
@@ -174,7 +176,9 @@ def main():
         raise ValueError('Invalid GNN type')
 
     num_params = sum(p.numel() for p in model.parameters())
-    print(f'#Params: {num_params}')
+    #print(f'#Params: {num_params}')
+    print('#Params: {}'.format(num_params))
+
 
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
@@ -211,11 +215,16 @@ def main():
                 torch.save(checkpoint, os.path.join(args.checkpoint_dir, 'checkpoint.pt'))
 
             test_auc = eval(model, device, test_loader, evaluator)
-            print(f"Test MAE: {test_auc}")
+            #print(f"Test MAE: {test_auc}")
+            print("Test MAE: {}".format(test_auc))
+
         scheduler.step()
 
-        print(f'Best validation MAE so far: Epoch {best_epoch}: {best_valid_auc}')
-    print(f"Test AUC: {test_auc}")
+        #print(f'Best validation MAE so far: Epoch {best_epoch}: {best_valid_auc}')
+        print('Best validation MAE so far: Epoch {}: {}'.format(best_epoch, best_valid_auc))
+
+    #print(f"Test AUC: {test_auc}")
+    print("Test AUC: {}".format(test_auc))
     if args.log_dir != '':
         writer.close()
 
